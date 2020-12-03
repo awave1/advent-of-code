@@ -4,11 +4,13 @@ use std::path::Path;
 
 /// Given a list of numbers, find two that add up to 2020 and find their product
 pub fn part_one(use_test: bool) -> Option<i32> {
-    let input = get_input(use_test);
-    for i in 0..input.len() {
-        for j in 1..input.len() {
-            if input[i] + input[j] == 2020 {
-                return Some(input[i] * input[j]);
+    let mut input = get_input(use_test);
+    input.sort();
+
+    for i in input.iter() {
+        for j in input.iter() {
+            if i + j == 2020 {
+                return Some(i * j);
             }
         }
     }
@@ -17,12 +19,14 @@ pub fn part_one(use_test: bool) -> Option<i32> {
 }
 
 pub fn part_two(use_test: bool) -> Option<i32> {
-    let input = get_input(use_test);
-    for i in 0..input.len() {
-        for j in 1..input.len() {
-            for k in 2..input.len() {
-                if input[i] + input[j] + input[k] == 2020 {
-                    return Some(input[i] * input[j] * input[k]);
+    let mut input = get_input(use_test);
+    input.sort();
+
+    for i in input.iter() {
+        for j in input.iter() {
+            for k in input.iter() {
+                if i + j + k == 2020 {
+                    return Some(i * j * k);
                 }
             }
         }
@@ -32,13 +36,13 @@ pub fn part_two(use_test: bool) -> Option<i32> {
 }
 
 fn get_input(use_test: bool) -> Vec<i32> {
-    let mut filename = String::from("input01");
+    let mut filename = String::from("input1");
 
     if use_test {
         filename += "-test";
     }
 
-    let pathstring = format!("inputs/day1/{}", filename);
+    let pathstring = format!("src/input/day1-{}", filename);
     let path = Path::new(pathstring.as_str());
 
     let mut file = match File::open(&path) {
