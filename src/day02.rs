@@ -98,14 +98,7 @@ pub fn part_two(use_test: bool) -> Option<i32> {
                     ),
                 };
 
-                let occurrences = vec![first_ch.eq(&ch), second_ch.eq(&ch)];
-                let exactly_one_char = occurrences
-                    .iter()
-                    .filter(|&f| *f)
-                    .collect::<Vec<&bool>>()
-                    .len()
-                    == 1;
-                if exactly_one_char {
+                if first_ch.eq(&ch) ^ second_ch.eq(&ch) {
                     count += 1;
                 }
             }
