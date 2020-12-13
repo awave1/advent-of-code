@@ -1,7 +1,5 @@
+use crate::input::get_input;
 use regex::Regex;
-use std::fs::File;
-use std::io::prelude::*;
-use std::path::Path;
 
 #[derive(Debug)]
 struct ParsedLine {
@@ -42,7 +40,7 @@ fn parse_line(line: &String) -> Option<ParsedLine> {
 /// The password policy indicates the lowest and highest number of times a given letter must appear for the password to be valid.
 /// For example, 1-3 a means that the password must contain a at least 1 time and at most 3 times.
 pub fn part_one(use_test: bool) -> Option<u32> {
-    let input = get_input(use_test);
+    let input = get_input("2", "1", use_test);
     let mut count = 0;
 
     for line in input {
@@ -69,7 +67,7 @@ pub fn part_one(use_test: bool) -> Option<u32> {
 }
 
 pub fn part_two(use_test: bool) -> Option<i32> {
-    let input = get_input(use_test);
+    let input = get_input("2", "2", use_test);
     let mut count: i32 = 0;
 
     for line in input {
@@ -107,28 +105,6 @@ pub fn part_two(use_test: bool) -> Option<i32> {
     }
 
     Some(count)
-}
-
-fn get_input(use_test: bool) -> Vec<String> {
-    let mut filename = String::from("input1");
-
-    if use_test {
-        filename += "-test";
-    }
-
-    let pathstring = format!("src/input/day2-{}", filename);
-    let path = Path::new(pathstring.as_str());
-
-    let mut file = match File::open(&path) {
-        Err(why) => panic!("couldn't open file {}: {}", path.display(), why),
-        Ok(file) => file,
-    };
-
-    let mut input_string = String::new();
-    match file.read_to_string(&mut input_string) {
-        Ok(_) => input_string.lines().map(|s| String::from(s)).collect(),
-        Err(why) => panic!("couldn't read {}: {}", path.display(), why),
-    }
 }
 
 #[test]

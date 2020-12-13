@@ -3,6 +3,7 @@ use clap;
 mod day01;
 mod day02;
 mod day03;
+mod input;
 
 fn parse_args() -> clap::ArgMatches {
     clap::App::new("advent-of-code")
