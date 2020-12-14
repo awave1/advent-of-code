@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::Read;
 use std::path::PathBuf;
 
-pub fn get_input(day: &str, part: &str, use_test: bool) -> Vec<String> {
+fn get_string(day: &str, part: &str, use_test: bool) -> String {
     let path = PathBuf::new()
         .join(env!("CARGO_MANIFEST_DIR"))
         .join("src")
@@ -21,7 +21,21 @@ pub fn get_input(day: &str, part: &str, use_test: bool) -> Vec<String> {
 
     let mut input_string = String::new();
     match file.read_to_string(&mut input_string) {
-        Ok(_) => input_string.lines().map(|s| String::from(s)).collect(),
+        Ok(_) => input_string,
         Err(why) => panic!("couldn't read {}: {}", path.display(), why),
     }
+}
+
+pub fn get_input_split(day: &str, part: &str, use_test: bool, split: &str) -> Vec<String> {
+    get_string(day, part, use_test)
+        .split(split)
+        .map(|s| String::from(s))
+        .collect()
+}
+
+pub fn get_input(day: &str, part: &str, use_test: bool) -> Vec<String> {
+    get_string(day, part, use_test)
+        .lines()
+        .map(|s| String::from(s))
+        .collect()
 }
