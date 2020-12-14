@@ -8,7 +8,7 @@ fn get_string(day: &str, part: &str, use_test: bool) -> String {
         .join("src")
         .join("input")
         .join(format!(
-            "day{}_{}{}",
+            "day{}_{}{}.txt",
             day,
             part,
             if use_test { "_test" } else { "" }
