@@ -41,6 +41,7 @@ fn main() {
         }
         "3" => {
             println!("day 3.1: {:?}", day03::part_one(is_test));
+            println!("day 3.2: {:?}", day03::part_two(is_test));
         }
         _ => panic!("solutions for day {} are not implemented", day),
     }
