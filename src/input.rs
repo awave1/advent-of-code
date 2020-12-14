@@ -8,10 +8,10 @@ fn get_string(day: &str, part: &str, use_test: bool) -> String {
         .join("src")
         .join("input")
         .join(format!(
-            "day{}.{}.{}",
+            "day{}.{}{}",
             day,
             part,
-            if use_test { "test" } else { "" }
+            if use_test { "-test" } else { "" }
         ));
 
     let mut file = match File::open(path.as_path()) {
