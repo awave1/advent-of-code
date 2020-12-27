@@ -211,11 +211,6 @@ pub fn part_two(use_test: bool) -> Option<u32> {
 }
 
 #[test]
-fn part_one_test() {
-  assert_eq!(Some(2), part_one(true));
-}
-
-#[test]
 fn part_two_test() {
   assert_eq!(Some(4), part_two(true));
 }

@@ -4,6 +4,7 @@ mod day01;
 mod day02;
 mod day03;
 mod day04;
+mod day05;
 mod input;
 
 fn parse_args() -> clap::ArgMatches {
@@ -47,6 +48,10 @@ fn main() {
         "4" => {
             println!("day 4.1: {:?}", day04::part_one(is_test));
             println!("day 4.2: {:?}", day04::part_two(is_test));
+        }
+        "5" => {
+            println!("day 5.1: {:?}", day05::part_one(is_test));
+            println!("day 5.2: {:?}", day05::part_two(is_test));
         }
         _ => panic!("solutions for day {} are not implemented", day),
     }
