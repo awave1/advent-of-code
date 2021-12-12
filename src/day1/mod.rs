@@ -1,11 +1,8 @@
 /// https://adventofcode.com/2021/day/1
 use crate::input::get_input;
 
-pub fn solve(is_test: bool) -> (i32, i32) {
-	let p1_result = p1(is_test);
-	let p2_result = p2(is_test);
-
-	(p1_result, p2_result)
+pub fn solve(use_test: bool) -> (i32, i32) {
+	(p1(use_test), p2(use_test))
 }
 
 /// count the number of times a depth measurement increases from the previous measurement

@@ -3,6 +3,12 @@ use clap;
 mod input;
 
 mod day1;
+mod day2;
+
+fn show_solution(day: &str, solutions: (i32, i32)) {
+	println!("day{}.1: {:?}", day, solutions.0);
+	println!("day{}.2: {:?}", day, solutions.1);
+}
 
 fn main() {
 	let args = clap::App::new("aoc2021")
@@ -29,12 +35,8 @@ fn main() {
 	let is_test = args.is_present("test");
 
 	match day {
-		"1" => {
-			let (p1_result, p2_result) = day1::solve(is_test);
-
-			println!("day1.1: {:?}", p1_result);
-			println!("day1.2: {:?}", p2_result);
-		}
+		"1" => show_solution(day, day1::solve(is_test)),
+		"2" => show_solution(day, day2::solve(is_test)),
 		_ => {
 			panic!("Solutions for day{} are not implemented yet!", day);
 		}
