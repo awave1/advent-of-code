@@ -1,5 +1,42 @@
-target
-.idea
-.vscode
-
+# Compiled files
+*.cmi
 *.cmo
+*.cma
+*.cmx
+*.cmxa
+*.o
+*.a
+
+# Build artifacts
+_build/
+*.byte
+*.native
+
+# Dependency directories
+_opam/
+opam-switch/
+
+# Editor/IDE specific files
+.vscode/
+.idea/
+*.merlin
+
+# Build and package management artifacts
+*.install
+*.install.common
+*.install.byte
+*.install.native
+*.install.docdir
+*.opam
+dune-project
+dune-workspace
+
+# Logs and temporary files
+*.log
+*.log.*
+*.cache
+*.merlin.cache
+*.mem
+
+# Sensitive or local configuration files
+*.env
