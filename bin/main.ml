@@ -11,6 +11,12 @@ let is_digit c =
   let ascii_val = Char.code c in
   ascii_val >= 48 && ascii_val <= 57
 
+let is_int s =
+  try
+    let _ = int_of_string s in
+    true
+  with Failure _ -> false
+
 (* l m a o *)
 let get_two_digit_str str =
   match str with
@@ -43,63 +49,88 @@ let solve_p1 day part is_test =
 
   sum
 
-module NumMap = Map.Make (String)
+let rec match_start list_of_chars =
+  match list_of_chars with
+  | [] -> ""
+  | c :: cs ->
+      if is_digit c then String.make 1 c
+      else if
+        String.starts_with ~prefix:"one"
+          (c :: cs |> List.to_seq |> String.of_seq)
+      then "1"
+      else if
+        String.starts_with ~prefix:"two"
+          (c :: cs |> List.to_seq |> String.of_seq)
+      then "2"
+      else if
+        String.starts_with ~prefix:"three"
+          (c :: cs |> List.to_seq |> String.of_seq)
+      then "3"
+      else if
+        String.starts_with ~prefix:"four"
+          (c :: cs |> List.to_seq |> String.of_seq)
+      then "4"
+      else if
+        String.starts_with ~prefix:"five"
+          (c :: cs |> List.to_seq |> String.of_seq)
+      then "5"
+      else if
+        String.starts_with ~prefix:"six"
+          (c :: cs |> List.to_seq |> String.of_seq)
+      then "6"
+      else if
+        String.starts_with ~prefix:"seven"
+          (c :: cs |> List.to_seq |> String.of_seq)
+      then "7"
+      else if
+        String.starts_with ~prefix:"eight"
+          (c :: cs |> List.to_seq |> String.of_seq)
+      then "8"
+      else if
+        String.starts_with ~prefix:"nine"
+          (c :: cs |> List.to_seq |> String.of_seq)
+      then "9"
+      else match_start cs
 
-let build_map =
-  let num_map = NumMap.empty in
-  let num_map = NumMap.add "one" 1 num_map in
-  let num_map = NumMap.add "two" 2 num_map in
-  let num_map = NumMap.add "three" 3 num_map in
-  let num_map = NumMap.add "four" 4 num_map in
-  let num_map = NumMap.add "five" 5 num_map in
-  let num_map = NumMap.add "six" 6 num_map in
-  let num_map = NumMap.add "seven" 7 num_map in
-  let num_map = NumMap.add "eight" 8 num_map in
-  let num_map = NumMap.add "nine" 9 num_map in
+let reverse str =
+  str |> String.to_seq |> List.of_seq |> List.rev |> List.to_seq
+  |> String.of_seq
 
-  num_map
+let rec match_end list_of_chars =
+  match list_of_chars with
+  | [] -> ""
+  | c :: cs ->
+      let res = match_end cs in
+
+      let str_tail = c :: cs |> List.to_seq |> String.of_seq in
+
+      if is_int res then res
+      else if is_digit c then String.make 1 c
+      else if String.starts_with ~prefix:"one" str_tail then "1"
+      else if String.starts_with ~prefix:"two" str_tail then "2"
+      else if String.starts_with ~prefix:"three" str_tail then "3"
+      else if String.starts_with ~prefix:"four" str_tail then "4"
+      else if String.starts_with ~prefix:"five" str_tail then "5"
+      else if String.starts_with ~prefix:"six" str_tail then "6"
+      else if String.starts_with ~prefix:"seven" str_tail then "7"
+      else if String.starts_with ~prefix:"eight" str_tail then "8"
+      else if String.starts_with ~prefix:"nine" str_tail then "9"
+      else res
 
 let solve_p2 day part is_test =
   let input_path = get_input_file day part is_test in
   let problem_input = input_path |> open_in in
-  let num_map = build_map in
-
-  let str_digit_regex =
-    Str.regexp
-      "\\(one\\|two\\|three\\|four\\|five\\|six\\|seven\\|eight\\|nine\\)"
-  in
-
-  let rec iterate_matches text pos =
-    try
-      let found_pos = Str.search_forward str_digit_regex text pos in
-      let matched = Str.matched_string text in
-
-      (* Printf.printf "in: %s\n" text; *)
-      (* Printf.printf "Match found: %s\n" matched; *)
-      let regex = Str.regexp matched in
-      let replaced =
-        Str.replace_first regex
-          (NumMap.find matched num_map |> string_of_int)
-          text
-      in
-
-      (* Printf.printf "replaced: %s\n" replaced; *)
-      iterate_matches replaced (found_pos + 1)
-    with Not_found -> text
-  in
 
   let rec read_lines result =
     try
       let line = input_line problem_input in
-      let converted = iterate_matches line 0 in
 
-      (* Converting string to individual chars *)
-      let chars = converted |> String.to_seq |> List.of_seq in
-      let nums_only = List.filter is_digit chars in
-      let strings = List.map (String.make 1) nums_only in
-      let joined = String.concat "" strings in
+      let chars = line |> String.to_seq |> List.of_seq in
+      let start = match_start chars in
+      let end' = match_end chars in
+      let result_num = start ^ end' |> int_of_string in
 
-      read_lines result + int_of_string (get_two_digit_str joined)
+      read_lines result + result_num
     with End_of_file -> result
   in
 
@@ -110,11 +141,7 @@ let solve_p2 day part is_test =
   sum
 
 let () =
-  if Array.length Sys.argv < 2 then prerr_endline "Specify at least day";
+  let is_test = bool_of_string (safe_get_element Sys.argv 1 "false") in
 
-  let day = safe_get_element Sys.argv 1 "1" in
-  let part = safe_get_element Sys.argv 2 "1" in
-  let is_test = bool_of_string (safe_get_element Sys.argv 3 "true") in
-
-  (* Printf.printf "d%s, p%s: %i\n" day part (solve day part is_test); *)
-  Printf.printf "d%s, p%s: %i\n" day part (solve_p2 day part false)
+  Printf.printf "d1, p1: %i\n" (solve_p1 "1" "1" is_test);
+  Printf.printf "d1, p2: %i\n" (solve_p2 "1" "2" is_test)
