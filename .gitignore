@@ -28,8 +28,6 @@ opam-switch/
 *.install.native
 *.install.docdir
 *.opam
-dune-project
-dune-workspace
 
 # Logs and temporary files
 *.log
